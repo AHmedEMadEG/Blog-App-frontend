@@ -6,16 +6,16 @@ const Navbar = () => {
   const { user, setUser } = useContext(UserContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  useEffect(()=> {
-    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-    if(loggedInUser){
-      setUser({...loggedInUser});
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (loggedInUser) {
+      setUser({ ...loggedInUser });
     }
   }, []);
 
   const handleLogout = () => {
     setUser(null);
-    localStorage.removeItem('loggedInUser');
+    localStorage.removeItem("loggedInUser");
   };
 
   const toggleMenu = () => {
@@ -23,8 +23,8 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-[var(--secondary-color)] shadow-lg p-4">
-      <div className="flex-1">
+    <div className="navbar bg-[var(--secondary-color)] shadow-lg p-4 md:justify-between">
+      <div className="flex-1 md:flex-none">
         <Link to="/">
           <img
             src="/images/home-icon.svg"
@@ -35,7 +35,38 @@ const Navbar = () => {
         </Link>
       </div>
 
+      <div className="hidden md:flex justify-center items-center space-x-16">
+        <Link to="videos">
+          <img
+            src="/images/navbar-videos-icon.png"
+            alt="Icon 1"
+            className="w-8 h-8"
+          />
+        </Link>
+        <Link to="groups">
+          <img
+            src="/images/navbar-groups-icon.png"
+            alt="Icon 2"
+            className="w-8 h-8"
+          />
+        </Link>
+        <Link to="gaming">
+          <img
+            src="/images/navbar-gaming-icon.png"
+            alt="Icon 3"
+            className="w-8 h-8"
+          />
+        </Link>
+      </div>
+
       <div className="flex-none md:hidden">
+        <Link to="notifications">
+          <img
+            src="/images/navbar-notifications-icon.png"
+            alt="Icon 4"
+            className="w-8 h-8"
+          />
+        </Link>
         <button onClick={toggleMenu} className="btn btn-ghost">
           <img
             src="/images/burger-menu.png"
@@ -52,7 +83,14 @@ const Navbar = () => {
         }`}
       >
         {user ? (
-          <div className="flex-none gap-2">
+          <div className="flex items-center gap-2">
+            <Link to="notifications">
+              <img
+                src="/images/navbar-notifications-icon.png"
+                alt="Icon 4"
+                className="w-8 h-8"
+              />
+            </Link>
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
