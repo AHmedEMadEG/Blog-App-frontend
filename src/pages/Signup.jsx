@@ -29,15 +29,20 @@ const Signup = () => {
     onSubmit: async (values) => {
       try {
         setIsLoading(true);
+        setError('');
         const { confirmPassword, ...userData } = values;
         await axios.post("http://localhost:5000/users/signup", userData); // it throws error directly when res status codes are error
 
         setIsLoading(false);
         navigate("/login");
       } catch (error) {
-        setError(
-          error.response.data.error || "Signup failed, please try again."
-        );
+        if(error.code === 'ERR_NETWORK'){
+          setError('Internet Disconnected, check your connection and try again');
+        }else{
+          setError(
+            error.response?.data?.error || "Signup failed, please try again."
+          );
+        }
         setIsLoading(false);
         console.log(error.response.data.error);
       }

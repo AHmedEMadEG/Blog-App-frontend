@@ -3,26 +3,32 @@ import Post from "../components/Post";
 import axios from "axios";
 import WhatsOnYourMind from "../components/WhatsOnYourMind";
 import { UserContext } from "../contexts/UserContext";
+import Toast from "../components/Toast";
 
 const Home = () => {
   const { user, setUser } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
-  const [error, setError] = useState("");
+  const [toastMessage, setToastMessage] = useState(["", ""]);
   const [content, setContent] = useState("");
+  const [postCreated, setPostCreated] = useState(false);
   const [postToEdit, setPostToEdit] = useState(null);
 
   useEffect(() => {
     const getPosts = async () => {
       try {
         const res = await axios.get("http://localhost:5000/posts");
-        if(res.data){
-          setPosts([...res.data]);
-        }else{
-          console.log("something went wrong!. could get posts from our database");
+        if (res.data) {
+          setPosts([...res.data].reverse());
+        } else {
+          setToastMessage([
+            "something went wrong!. couldn't get posts from our database",
+            "error",
+          ]);
+          setTimeout(() => setToastMessage(["", ""]), 3000);
         }
       } catch (error) {
-        setError(error.message);
-        console.log(error); // toast to be added
+        setToastMessage([error.message, "error"]);
+        setTimeout(() => setToastMessage(["", ""]), 3000);
       }
     };
     getPosts();
@@ -36,18 +42,22 @@ const Home = () => {
           { content: newContent },
           { headers: { Authorization: user.token } }
         );
-        console.log(res);
         const newPost = res.data.newPost;
         if (newPost) {
-          // setContent("");
           newPost.user = user;
-          setPosts([...posts, newPost]);
+          setPosts([newPost, ...posts]);
+          setPostCreated(true);
+          setTimeout(() => {
+            setPostCreated(false);
+          }, 2000);
         }
       } else {
-        console.log("add content for your post"); // toast to be added
+        setToastMessage(["add content for your post", "error"]);
+        setTimeout(() => setToastMessage(["", ""]), 3000);
       }
     } catch (error) {
-      console.log(error.message);
+      setToastMessage([error.message, "error"]);
+      setTimeout(() => setToastMessage(["", ""]), 3000);
     }
   };
 
@@ -58,10 +68,12 @@ const Home = () => {
         setContent((prev) => post.content);
         document.getElementById("my_modal_1").showModal();
       } else {
-        console.log("can't edit a post that is not yours"); // toast to be added
+        setToastMessage(["can't edit a post that is not yours", "info"]);
+        setTimeout(() => setToastMessage(["", ""]), 3000);
       }
     } catch (error) {
-      console.log(error.message); // toast to be added
+      setToastMessage([error.message, "error"]);
+      setTimeout(() => setToastMessage(["", ""]), 3000);
     }
   };
 
@@ -73,13 +85,29 @@ const Home = () => {
           { content },
           { headers: { Authorization: user.token } }
         );
-        document.getElementById("my_modal_1").close();
+        if (res.data) {
+          document.getElementById("my_modal_1").close();
+          const newPosts = posts;
+          const index = posts.findIndex(
+            (post) => post._id === res.data.post._id
+          );
+          newPosts[index] = { ...res.data.post, user };
+          setPosts([...newPosts]);
+        } else {
+          setToastMessage([
+            "something went wrong!. couldn't update your post in our database",
+            "error",
+          ]);
+          setTimeout(() => setToastMessage(["", ""]), 3000);
+        }
       } else {
-        console.log("no changes made to the post"); // toast to be added
+        setToastMessage(["no changes made to the post", "info"]);
+        setTimeout(() => setToastMessage(["", ""]), 3000);
         document.getElementById("my_modal_1").close();
       }
     } catch (error) {
-      console.log(error.message); // toast to be added
+      setToastMessage([error.message, "error"]);
+      setTimeout(() => setToastMessage(["", ""]), 3000);
     }
   };
 
@@ -97,22 +125,32 @@ const Home = () => {
         );
 
         if (res.data.success) {
-          console.log("deleted successfully");
+          setToastMessage(["post deleted", "success"]);
+          setTimeout(() => setToastMessage(["", ""]), 3000);
           const newPosts = posts.filter(
             (post) => post._id !== postToDelete._id
           );
           setPosts([...newPosts]);
+        } else {
+          setToastMessage([
+            "something went wrong!. couldn't delete post from our database",
+            "error",
+          ]);
+          setTimeout(() => setToastMessage(["", ""]), 3000);
         }
       } else {
-        console.log("can't delete a post that is not yours");
+        setToastMessage(["can't delete a post that is not yours", "info"]);
+        setTimeout(() => setToastMessage(["", ""]), 3000);
       }
     } catch (error) {
-      console.log(error.message);
+      setToastMessage([error.message, "error"]);
+      setTimeout(() => setToastMessage(["", ""]), 3000);
     }
   };
 
   return (
-    <div className="py-4 container flex flex-col items-center gap-2">
+    <div className="py-4 container mx-auto flex flex-col items-center gap-2">
+      {toastMessage[0] && <Toast message={toastMessage[0]} type={toastMessage[1]} />}
       <dialog id="my_modal_1" className="modal">
         <div className="modal-box bg-[var(--primary-color)] rounded-lg shadow-lg p-6">
           <div className="flex items-center space-x-4 mb-6">
@@ -142,7 +180,9 @@ const Home = () => {
         </div>
       </dialog>
 
-      {user && <WhatsOnYourMind createPost={createPost} />}
+      {user && (
+        <WhatsOnYourMind createPost={createPost} postCreated={postCreated} />
+      )}
       {posts.map((post) => (
         <Post
           post={post}

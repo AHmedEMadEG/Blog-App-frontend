@@ -1,10 +1,14 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 
-const WhatsOnYourMind = ({createPost}) => {
+const WhatsOnYourMind = ({ createPost, postCreated }) => {
   const { user } = useContext(UserContext);
   const [content, setContent] = useState("");
+
+  useEffect(() => {
+    setContent("");
+  },[postCreated]);
 
   return (
     <div className="max-w-lg w-[512px] min-h-20 bg-[var(--secondary-color)] text-[var(--font-color)] p-4 rounded-xl mb-4">
@@ -16,7 +20,7 @@ const WhatsOnYourMind = ({createPost}) => {
         />
         <input
           type="text"
-          value={content}
+          value={postCreated ? "" : content}
           onChange={(e) => setContent(e.target.value)}
           className="w-full bg-[var(--font-color)] text-[var(--primary-color)] placeholder:text-[var(--secondary-color)] px-4 py-2 rounded-full"
           placeholder="What's on your mind?"

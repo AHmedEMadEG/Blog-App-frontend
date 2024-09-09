@@ -1,12 +1,8 @@
-import React, { useContext, useState } from "react";
-import { UserContext } from "../contexts/UserContext";
 import { Link } from "react-router-dom";
 
 const Post = ({ post, handleEdit, handleDelete }) => {
-  const { user } = useContext(UserContext);
-
   return (
-    <div className="max-w-lg w-[512px] min-h-44 bg-[var(--secondary-color)] p-4 rounded-xl space-y-4">
+    <div className="max-w-lg w-96 md:w-[512px] min-h-44 bg-[var(--secondary-color)] p-4 rounded-xl space-y-4">
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-4">
           <img
@@ -40,24 +36,21 @@ const Post = ({ post, handleEdit, handleDelete }) => {
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-6 z-[1] p-3 shadow bg-[var(--primary-color)] rounded-lg w-52"
+              className="menu menu-sm dropdown-content z-[1] p-3 shadow bg-[var(--primary-color)] rounded-lg w-52"
             >
-              <li
-                onClick={() => handleEdit(post)}
-                className="rounded-lg hover:bg-[var(--primary-color)] p-2"
-              >
+              <li className="rounded-lg hover:bg-[var(--primary-color)] p-2">
                 <Link
                   to={`/post/${post._id}`}
-                  className="cursor-pointer"
+                  className="cursor-pointer md:text-lg"
                 >
-                  open post
+                  open
                 </Link>
               </li>
               <li
                 onClick={() => handleEdit(post)}
                 className="rounded-lg hover:bg-[var(--primary-color)] p-2"
               >
-                <p className="cursor-pointer">edit post</p>
+                <p className="cursor-pointer md:text-lg">edit post</p>
               </li>
             </ul>
           </div>

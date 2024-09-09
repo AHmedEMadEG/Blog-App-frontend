@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import PostSkeleton from "../components/PostSkeleton";
 
 const PostDetailsPage = () => {
@@ -15,7 +15,7 @@ const PostDetailsPage = () => {
           setPost(res.data.post);
         } else {
           console.log(
-            "something went wrong!. could get post details from our database"
+            "something went wrong!. couldn't get post details from our database"
           );
         }
       } catch (error) {

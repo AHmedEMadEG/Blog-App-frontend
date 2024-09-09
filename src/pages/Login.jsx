@@ -26,25 +26,28 @@ const Login = () => {
       try {
         setIsLoading(true);
 
-        // it throws error directly when res status codes are error
         const res = await axios.post(
           "http://localhost:5000/users/login",
           values
         );
 
-        // for unset error status codes
         if (res.data.error) {
           throw new Error(res.data.error);
         }
 
         setIsLoading(false);
         setUser(res.data.user);
+        localStorage.setItem('loggedInUser', JSON.stringify(res.data.user));
 
         navigate("/");
       } catch (error) {
-        setError(
-          error.response?.data?.error || "Login failed, please try again."
-        );
+        if(error.code === 'ERR_NETWORK'){
+          setError('Internet Disconnected, check your connection and try again');
+        }else{
+          setError(
+            error.response?.data?.error || "Login failed, please try again."
+          );
+        }
         setIsLoading(false);
         console.log(error.response?.data?.error || error);
       }
