@@ -12,16 +12,20 @@ const Home = () => {
   const [postToEdit, setPostToEdit] = useState(null);
 
   useEffect(() => {
-    try {
-      const getPosts = async () => {
+    const getPosts = async () => {
+      try {
         const res = await axios.get("http://localhost:5000/posts");
-        setPosts([...res.data]);
-      };
-      getPosts();
-    } catch (error) {
-      setError(error.message);
-      console.log(error); // toast to be added
-    }
+        if(res.data){
+          setPosts([...res.data]);
+        }else{
+          console.log("something went wrong!. could get posts from our database");
+        }
+      } catch (error) {
+        setError(error.message);
+        console.log(error); // toast to be added
+      }
+    };
+    getPosts();
   }, []);
 
   const createPost = async (newContent) => {
@@ -32,14 +36,14 @@ const Home = () => {
           { content: newContent },
           { headers: { Authorization: user.token } }
         );
-        console.log(res)
+        console.log(res);
         const newPost = res.data.newPost;
         if (newPost) {
           // setContent("");
           newPost.user = user;
           setPosts([...posts, newPost]);
         }
-      }else{
+      } else {
         console.log("add content for your post"); // toast to be added
       }
     } catch (error) {

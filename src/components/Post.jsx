@@ -48,7 +48,7 @@ const Post = ({ post, handleEdit, handleDelete }) => {
               >
                 <Link
                   to={`/post/${post._id}`}
-                  className="cursor-pointer text-lg"
+                  className="cursor-pointer"
                 >
                   open post
                 </Link>
@@ -57,7 +57,7 @@ const Post = ({ post, handleEdit, handleDelete }) => {
                 onClick={() => handleEdit(post)}
                 className="rounded-lg hover:bg-[var(--primary-color)] p-2"
               >
-                <p className="cursor-pointer text-lg">edit post</p>
+                <p className="cursor-pointer">edit post</p>
               </li>
             </ul>
           </div>

@@ -13,7 +13,7 @@ const Navbar = () => {
       <div className="flex-1">
         <Link to="/">
           <img
-            src="./images/home-icon.svg"
+            src="/images/home-icon.svg"
             alt="home icon"
             width="40px"
             height="40px"
