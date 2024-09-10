@@ -15,6 +15,7 @@ const Signup = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      profilePicture: null,
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Required"),
@@ -25,20 +26,33 @@ const Signup = () => {
       confirmPassword: Yup.string()
         .oneOf([Yup.ref("password"), null], "Passwords must match")
         .required("Required"),
+      profilePicture: Yup.mixed().required("Profile picture is required"),
     }),
     onSubmit: async (values) => {
       try {
         setIsLoading(true);
-        setError('');
-        const { confirmPassword, ...userData } = values;
-        await axios.post("http://localhost:5000/users/signup", userData); // it throws error directly when res status codes are error
+        setError("");
+
+        const formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("email", values.email);
+        formData.append("password", values.password);
+        formData.append("profilePicture", values.profilePicture);
+
+        await axios.post("http://localhost:5000/users/signup", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
         setIsLoading(false);
         navigate("/login");
       } catch (error) {
-        if(error.code === 'ERR_NETWORK'){
-          setError('Internet Disconnected, check your connection and try again');
-        }else{
+        if (error.code === "ERR_NETWORK") {
+          setError(
+            "Internet Disconnected, check your connection and try again"
+          );
+        } else {
           setError(
             error.response?.data?.error || "Signup failed, please try again."
           );
@@ -54,6 +68,7 @@ const Signup = () => {
       <form
         onSubmit={formik.handleSubmit}
         className="w-full max-w-sm p-6 shadow-lg rounded-lg bg-white"
+        encType="multipart/form-data"
       >
         <h1 className="text-2xl font-bold mb-6">Signup</h1>
 
@@ -96,7 +111,7 @@ const Signup = () => {
           ) : null}
         </div>
 
-        <div className="mb-6">
+        <div className="mb-4">
           <label className="block text-gray-700">Confirm Password</label>
           <input
             type="password"
@@ -108,9 +123,29 @@ const Signup = () => {
             <div className="text-red-500">{formik.errors.confirmPassword}</div>
           ) : null}
         </div>
+
+        <div className="mb-6">
+          <label className="block text-gray-700">Profile Picture</label>
+          <input
+            type="file"
+            name="profilePicture"
+            className="file-input file-input-bordered w-full"
+            onChange={(event) => {
+              formik.setFieldValue(
+                "profilePicture",
+                event.currentTarget.files[0]
+              );
+            }}
+          />
+          {formik.touched.profilePicture && formik.errors.profilePicture ? (
+            <div className="text-red-500">{formik.errors.profilePicture}</div>
+          ) : null}
+        </div>
+
         {error ? (
           <div className="text-red-500 text-center mb-2">{error}</div>
         ) : null}
+
         <button type="submit" className="btn btn-primary w-full">
           {isLoading && (
             <span className="loading loading-ring loading-md me-2"></span>

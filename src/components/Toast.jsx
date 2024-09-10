@@ -1,7 +1,6 @@
 import React from "react";
 
 const Toast = ({ message, type = "success" }) => {
-  // Define styles based on the type of toast
   const toastStyles = {
     success: "bg-green-600 text-white",
     error: "bg-red-600 text-white",

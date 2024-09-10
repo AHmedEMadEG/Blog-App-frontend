@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Post = ({ post, handleEdit, handleDelete }) => {
@@ -5,11 +6,16 @@ const Post = ({ post, handleEdit, handleDelete }) => {
     <div className="max-w-lg w-96 md:w-[512px] min-h-44 bg-[var(--secondary-color)] p-4 rounded-xl space-y-4">
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-4">
-          <img
-            src="./images/avatar-icon.png"
-            alt="avatar icon"
-            className="bg-[var(--font-color)] p-2 w-10 h-10 rounded-full"
-          />
+          <div className="w-12 h-12 rounded-full">
+            <img
+              src={post.user.profilePictureUrl || "./images/avatar-icon.png"}
+              alt="avatar icon"
+              className={`${
+                !post.user.profilePictureUrl && "p-2"
+              } bg-[var(--font-color)] object-cover rounded-full`}
+            />
+          </div>
+
           <div>
             <h4 className="text-lg font-semibold">{post.user.name}</h4>
             <p className="text-sm">about an hour ago</p>
@@ -18,7 +24,6 @@ const Post = ({ post, handleEdit, handleDelete }) => {
         <div className="flex items-center space-x-2">
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-              {/* onClick={() => setPostToEdit(post)} */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

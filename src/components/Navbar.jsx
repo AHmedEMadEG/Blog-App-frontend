@@ -40,21 +40,21 @@ const Navbar = () => {
           <img
             src="/images/navbar-videos-icon.png"
             alt="Icon 1"
-            className="w-8 h-8"
+            className="w-10 h-10"
           />
         </Link>
         <Link to="groups">
           <img
             src="/images/navbar-groups-icon.png"
             alt="Icon 2"
-            className="w-8 h-8"
+            className="w-10 h-10"
           />
         </Link>
         <Link to="gaming">
           <img
             src="/images/navbar-gaming-icon.png"
             alt="Icon 3"
-            className="w-8 h-8"
+            className="w-10 h-10"
           />
         </Link>
       </div>

@@ -14,12 +14,15 @@ const PostDetailsPage = () => {
         if (res.data.post) {
           setPost(res.data.post);
         } else {
-          console.log(
-            "something went wrong!. couldn't get post details from our database"
-          );
+          setToastMessage([
+            "something went wrong!. couldn't get post details from our database",
+            "error",
+          ]);
+          setTimeout(() => setToastMessage(["", ""]), 3000);
         }
       } catch (error) {
-        console.log(error.message); // show error msg
+        setToastMessage([error.message, "error"]);
+        setTimeout(() => setToastMessage(["", ""]), 3000);
       }
     };
     getPost();
