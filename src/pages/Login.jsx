@@ -27,7 +27,7 @@ const Login = () => {
         setIsLoading(true);
 
         const res = await axios.post(
-          "https://social-media-app-api-nine.vercel.app/users/login",
+          "https://social-media-app-api-nine.vercel.app/login",
           values
         );
 
