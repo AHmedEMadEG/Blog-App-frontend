@@ -1,7 +1,14 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Post = ({ post, handleEdit, handleDelete }) => {
+  const [loading, setLoading] = useState(false);
+
+  const beforeHandleDelete = (post) => {
+    setLoading(true);
+    handleDelete(post);
+  };
+
   return (
     <div className="max-w-lg w-96 md:w-[512px] min-h-44 bg-[var(--secondary-color)] p-4 rounded-xl space-y-4">
       <div className="flex justify-between items-center">
@@ -59,21 +66,28 @@ const Post = ({ post, handleEdit, handleDelete }) => {
               </li>
             </ul>
           </div>
-          <svg
-            onClick={() => handleDelete(post)}
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-9 p-1 cursor-pointer rounded-full hover:bg-neutral-700"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 18 18 6M6 6l12 12"
-            />
-          </svg>
+          {loading ? (
+            <span className="loading loading-spinner loading-sm"></span>
+          ) : (
+            <svg
+              onClick={() => beforeHandleDelete(post)}
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`${
+                loading && "cursor-not-allowed"
+              } size-9 p-1 cursor-pointer rounded-full hover:bg-neutral-700`}
+              disabled={loading}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
+            </svg>
+          )}
         </div>
       </div>
       <div>
