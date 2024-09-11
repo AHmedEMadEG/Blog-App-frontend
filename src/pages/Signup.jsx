@@ -145,7 +145,7 @@ const Signup = () => {
           <div className="text-red-500 text-center mb-2">{error}</div>
         ) : null}
 
-        <button type="submit" className="btn btn-primary w-full">
+        <button type="submit" className={`${isLoading && 'cursor-not-allowed'} btn btn-primary w-full`} disabled={isLoading}>
           {isLoading && (
             <span className="loading loading-ring loading-md me-2"></span>
           )}
