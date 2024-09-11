@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 const Post = ({ post, handleEdit, handleDelete }) => {
   const [loading, setLoading] = useState(false);
 
-  const beforeHandleDelete = (post) => {
+  const beforeHandleDelete = async (post) => {
     setLoading(true);
-    handleDelete(post);
+    const isDone = await handleDelete(post);
+    isDone === 'done' && setLoading(false);
   };
 
   return (
