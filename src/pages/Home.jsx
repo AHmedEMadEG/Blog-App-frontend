@@ -16,7 +16,7 @@ const Home = () => {
   useEffect(() => {
     const getPosts = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/posts");
+        const res = await axios.get("https://social-media-app-api-nine.vercel.app/posts");
         if (res.data) {
           setPosts([...res.data].reverse());
         } else {
@@ -38,7 +38,7 @@ const Home = () => {
     try {
       if (newContent.trim()) {
         const res = await axios.post(
-          "http://localhost:5000/posts/create",
+          "https://social-media-app-api-nine.vercel.app/posts/create",
           { content: newContent },
           { headers: { Authorization: user.token } }
         );
@@ -81,7 +81,7 @@ const Home = () => {
     try {
       if (content && content !== postToEdit.content) {
         const res = await axios.put(
-          `http://localhost:5000/posts/${postToEdit._id}`,
+          `https://social-media-app-api-nine.vercel.app/posts/${postToEdit._id}`,
           { content },
           { headers: { Authorization: user.token } }
         );
@@ -120,7 +120,7 @@ const Home = () => {
     try {
       if (user && user._id === postToDelete.user._id) {
         const res = await axios.delete(
-          `http://localhost:5000/posts/${postToDelete._id}`,
+          `https://social-media-app-api-nine.vercel.app/posts/${postToDelete._id}`,
           { headers: { Authorization: user.token } }
         );
 

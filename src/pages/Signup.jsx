@@ -39,7 +39,7 @@ const Signup = () => {
         formData.append("password", values.password);
         formData.append("profilePicture", values.profilePicture);
 
-        await axios.post("http://localhost:5000/users/signup", formData, {
+        await axios.post("https://social-media-app-api-nine.vercel.app/users/signup", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

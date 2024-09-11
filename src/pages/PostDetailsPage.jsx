@@ -10,7 +10,7 @@ const PostDetailsPage = () => {
   useEffect(() => {
     const getPost = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/posts/${id}`);
+        const res = await axios.get(`https://social-media-app-api-nine.vercel.app/posts/${id}`);
         if (res.data.post) {
           setPost(res.data.post);
         } else {
