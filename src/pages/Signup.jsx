@@ -26,7 +26,6 @@ const Signup = () => {
       confirmPassword: Yup.string()
         .oneOf([Yup.ref("password"), null], "Passwords must match")
         .required("Required"),
-      profilePicture: Yup.mixed(),
     }),
     onSubmit: async (values) => {
       try {
